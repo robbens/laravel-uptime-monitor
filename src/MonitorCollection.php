@@ -3,6 +3,7 @@
 namespace Spatie\UptimeMonitor;
 
 use Generator;
+use GuzzleHttp\TransferStats;
 use Illuminate\Support\Collection;
 use GuzzleHttp\Promise\EachPromise;
 use Psr\Http\Message\ResponseInterface;
@@ -55,7 +56,7 @@ class MonitorCollection extends Collection
                     'headers' => $this->promiseHeaders($monitor),
                     'body' => $monitor->uptime_check_payload,
                     'on_stats' => function (TransferStats $stats) use ($monitor) {
-                        $monitor->uptime_check_response_time = $stats->getTransferTime();
+                        $monitor->uptime_check_response_time = $stats->getTransferTime() * 1000;
                     },
                 ])
             );
